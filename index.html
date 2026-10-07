@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<!--
+=====================================================================
+  광주세계맥주축제 원페이지 웹사이트 - index.html
+  ---------------------------------------------------------------------
+  [파일 구성]
+    index.html      : 화면 구조(마크업)
+    css/style.css   : 디자인(색상, 레이아웃, 반응형)
+    js/main.js      : 동작(필터, 탭, 아코디언, 카운트다운 등) + 데이터
+  [수정 가이드 공통]
+    - 텍스트 : 태그 사이의 글자를 그대로 바꾸면 됩니다.
+    - 이미지 : <img src="..."> 의 src 주소만 교체하세요.
+               (권장) images 폴더에 파일을 넣고 src="images/파일명.jpg"
+    - 메뉴   : GNB의 href="#아이디" 와 각 <section id="아이디"> 가 짝입니다.
+    - 맥주 라인업 / 푸드 / 공연 타임테이블 데이터는 js/main.js 상단
+      [DATA] 영역에서 수정합니다.
+=====================================================================
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="2026 광주세계맥주축제 - 세계의 맥주, 광주의 밤을 채우다">
+  <title>2026 광주세계맥주축제 | Gwangju World Beer Festival</title>
+
+  <!-- [폰트] Pretendard(본문) / Black Han Sans·Montserrat(타이틀) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
+
+  <!-- [스타일시트] -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =================================================================
+       HEADER (GNB) - 상단 고정 네비게이션
+       · 메뉴 추가: <li> 한 줄 복사 후 href와 텍스트 수정
+                    (반드시 같은 id를 가진 section이 있어야 함)
+       · 로고 교체: .logo 안의 텍스트를 <img src="images/logo.png" alt="로고">로 바꿔도 됩니다.
+  ================================================================== -->
+  <header id="header" class="header">
+    <div class="container header__inner">
+      <a href="#hero" class="logo" aria-label="광주세계맥주축제 홈">
+        <span class="logo__mark">🍺</span>
+        <span class="logo__text">GWANGJU<strong>BEER FEST</strong></span>
+      </a>
+
+      <nav class="gnb" id="gnb" aria-label="주 메뉴">
+        <ul class="gnb__list">
+          <li><a href="#about" class="gnb__link">축제안내</a></li>
+          <li><a href="#events" class="gnb__link">주요행사</a></li>
+          <li><a href="#performance" class="gnb__link">공연정보</a></li>
+          <li><a href="#location" class="gnb__link">오시는길</a></li>
+          <li><a href="#faq" class="gnb__link">FAQ</a></li>
+        </ul>
+        <!-- 모바일 메뉴 안에서만 보이는 예매 버튼 -->
+        <button type="button" class="btn btn--primary gnb__ticket js-open-ticket">티켓 예매</button>
+      </nav>
+
+      <!-- 우측 고정 CTA 버튼 (PC) -->
+      <button type="button" class="btn btn--primary header__cta js-open-ticket">티켓 예매</button>
+
+      <!-- 모바일 햄버거 버튼 -->
+      <button type="button" class="menu-toggle" id="menuToggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="gnb">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =================================================================
+         SECTION 1. HERO (메인 상단)
+         · 배경 이미지: .hero__bg img 의 src 교체 (권장 1920x1080 이상)
+         · 맥주 기포 애니메이션: <canvas id="bubbleCanvas"> (main.js 6번 영역)
+         · 축제 기간/장소: .hero__info 텍스트 수정
+           ※ 카운트다운 날짜는 main.js 의 FESTIVAL_START 도 함께 수정!
+    ================================================================== -->
+    <section id="hero" class="hero">
+      <div class="hero__bg" data-parallax="0.35">
+        <img src="https://images.unsplash.com/photo-1436076863939-06870fe779c2?auto=format&fit=crop&w=1920&q=80"
+             alt="축제 현장에서 건배하는 맥주잔" loading="eager">
+      </div>
+      <canvas id="bubbleCanvas" class="hero__canvas" aria-hidden="true"></canvas>
+      <div class="hero__overlay"></div>
+
+      <div class="container hero__content">
+        <p class="hero__eyebrow">2026 GWANGJU WORLD BEER FESTIVAL</p>
+        <h1 class="hero__title">광주<br class="mo-only">세계맥주축제</h1>
+        <p class="hero__slogan">세계의 맥주, <em>광주의 밤</em>을 채우다</p>
+        <ul class="hero__info">
+          <li><span class="hero__info-label">DATE</span> 2026.10.23(금) – 10.25(일)</li>
+          <li><span class="hero__info-label">PLACE</span> 광주 상무시민공원 일원</li>
+        </ul>
+        <div class="hero__btns">
+          <button type="button" class="btn btn--primary btn--lg js-open-ticket">티켓 예매하기</button>
+          <a href="#about" class="btn btn--ghost btn--lg">축제 알아보기</a>
+        </div>
+      </div>
+
+      <a href="#about" class="hero__scroll" aria-label="아래로 스크롤">
+        <span>SCROLL</span><i></i>
+      </a>
+    </section>
+
+
+    <!-- =================================================================
+         SECTION 2. 축제안내 (About Festival)
+         · 개요 문구: .about__intro 안의 텍스트
+         · 인포그래픽 숫자: data-count="숫자" 값을 수정 (자동 카운트업)
+         · 맥주 라인업 / 푸드 페어링 카드는 main.js [DATA] 의
+           BEERS / FOODS 배열에서 추가·수정합니다.
+    ================================================================== -->
+    <section id="about" class="section about">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">ABOUT FESTIVAL</p>
+          <h2 class="section__title">축제안내</h2>
+        </header>
+
+        <!-- 2-1. 축제 개요 -->
+        <div class="about__intro">
+          <div class="about__img reveal" data-parallax="0.08">
+            <img src="https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=900&q=80"
+                 alt="다양한 맥주가 담긴 잔" loading="lazy">
+          </div>
+          <div class="about__text reveal">
+            <h3>전 세계 맥주가 한자리에,<br><span class="text-amber">광주의 가을밤 페스티벌</span></h3>
+            <p>광주세계맥주축제는 30여 개국의 정통 맥주와 지역 수제맥주 브루어리가 한자리에 모이는 도심형 야간 페스티벌입니다.
+              맥주와 음식, 음악이 어우러진 3일간의 축제를 통해 시민에게는 일상 속 쉼표를, 지역 소상공인과 브루어리에게는 새로운 판로를 제공합니다.</p>
+            <ul class="about__purpose">
+              <li><strong>01</strong> 지역 수제맥주 산업 활성화</li>
+              <li><strong>02</strong> 야간관광 콘텐츠로 도심 상권 활력</li>
+              <li><strong>03</strong> 시민 누구나 즐기는 문화 축제</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 2-2. 카운트다운 타이머 (날짜는 main.js FESTIVAL_START에서 수정) -->
+        <div class="countdown reveal" id="countdown">
+          <p class="countdown__label" id="countdownLabel">축제 개막까지</p>
+          <div class="countdown__boxes">
+            <div class="countdown__box"><span id="cdDays">00</span><small>DAYS</small></div>
+            <div class="countdown__box"><span id="cdHours">00</span><small>HOURS</small></div>
+            <div class="countdown__box"><span id="cdMins">00</span><small>MINUTES</small></div>
+            <div class="countdown__box"><span id="cdSecs">00</span><small>SECONDS</small></div>
+          </div>
+        </div>
+
+        <!-- 2-3. 핵심 인포그래픽 (data-count 숫자 수정) -->
+        <ul class="stats reveal">
+          <li class="stats__item"><strong data-count="32">0</strong><span>참여 국가</span></li>
+          <li class="stats__item"><strong data-count="120">0</strong><span>맥주 라인업</span></li>
+          <li class="stats__item"><strong data-count="45">0</strong><span>참여 브랜드</span></li>
+          <li class="stats__item"><strong data-count="24">0</strong><span>공연 아티스트</span></li>
+        </ul>
+
+        <!-- 2-4. 맥주 라인업 탭/필터
+             · 필터 버튼의 data-filter 값은 main.js BEERS 의 region/style 값과 같아야 합니다. -->
+        <div class="lineup">
+          <h3 class="sub-title reveal">BEER LINE-UP</h3>
+          <div class="filter-group reveal" role="group" aria-label="대륙별 필터">
+            <span class="filter-group__label">대륙</span>
+            <button type="button" class="chip is-active" data-filter-type="region" data-filter="all">전체</button>
+            <button type="button" class="chip" data-filter-type="region" data-filter="europe">유럽</button>
+            <button type="button" class="chip" data-filter-type="region" data-filter="asia">아시아</button>
+            <button type="button" class="chip" data-filter-type="region" data-filter="america">아메리카</button>
+            <button type="button" class="chip" data-filter-type="region" data-filter="korea">한국 수제</button>
+          </div>
+          <div class="filter-group reveal" role="group" aria-label="스타일별 필터">
+            <span class="filter-group__label">스타일</span>
+            <button type="button" class="chip is-active" data-filter-type="style" data-filter="all">전체</button>
+            <button type="button" class="chip" data-filter-type="style" data-filter="lager">라거</button>
+            <button type="button" class="chip" data-filter-type="style" data-filter="ale">에일</button>
+            <button type="button" class="chip" data-filter-type="style" data-filter="ipa">IPA</button>
+            <button type="button" class="chip" data-filter-type="style" data-filter="stout">스타우트</button>
+            <button type="button" class="chip" data-filter-type="style" data-filter="wheat">밀맥주</button>
+          </div>
+          <!-- 카드는 main.js가 BEERS 데이터로 자동 생성 -->
+          <div class="beer-grid" id="beerGrid" aria-live="polite"></div>
+          <p class="beer-grid__empty" id="beerEmpty" hidden>조건에 맞는 맥주가 없습니다. 다른 필터를 선택해 보세요.</p>
+        </div>
+
+        <!-- 2-5. 푸드 페어링 존 카러셀 (main.js FOODS 데이터로 자동 생성) -->
+        <div class="pairing">
+          <div class="pairing__head reveal">
+            <h3 class="sub-title">FOOD PAIRING ZONE</h3>
+            <div class="carousel__nav">
+              <button type="button" class="carousel__btn" id="foodPrev" aria-label="이전">‹</button>
+              <button type="button" class="carousel__btn" id="foodNext" aria-label="다음">›</button>
+            </div>
+          </div>
+          <div class="carousel reveal" id="foodCarousel">
+            <div class="carousel__track" id="foodTrack"></div>
+          </div>
+          <div class="carousel__dots" id="foodDots"></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =================================================================
+         SECTION 3. 주요행사 (Events & Programs)
+         · 체험 프로그램 카드: <article class="program-card"> 하나가 카드 1개
+           → 복사/붙여넣기로 추가, 이미지 src·제목·설명 수정
+         · 구역 안내 지도: .zonemap__zone 버튼의 data-zone 값과
+           main.js ZONES 데이터의 키가 짝입니다.
+    ================================================================== -->
+    <section id="events" class="section events">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">EVENTS &amp; PROGRAMS</p>
+          <h2 class="section__title">주요행사</h2>
+        </header>
+
+        <!-- 3-1. 체험 프로그램 카드 -->
+        <div class="program-grid">
+          <article class="program-card reveal">
+            <div class="program-card__img">
+              <img src="https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&w=800&q=80" alt="블라인드 테이스팅용 맥주잔" loading="lazy">
+              <span class="badge">사전신청</span>
+            </div>
+            <div class="program-card__body">
+              <h3>수제맥주 블라인드 테이스팅</h3>
+              <p>라벨을 가린 5종의 맥주를 맛보고 스타일을 맞혀보세요. 정답자에게는 한정판 굿즈를 드립니다.</p>
+              <ul class="program-card__meta"><li>매일 17:00 / 19:00</li><li>회차당 30명</li></ul>
+            </div>
+          </article>
+
+          <article class="program-card reveal">
+            <div class="program-card__img">
+              <img src="https://images.unsplash.com/photo-1600788886242-5c96aabe3757?auto=format&fit=crop&w=800&q=80" alt="맥주잔 공예 체험" loading="lazy">
+              <span class="badge">현장접수</span>
+            </div>
+            <div class="program-card__body">
+              <h3>나만의 맥주잔 만들기</h3>
+              <p>유리 전용 펜과 샌딩 기법으로 세상에 하나뿐인 맥주잔을 직접 디자인하고 가져가세요.</p>
+              <ul class="program-card__meta"><li>16:00 – 21:00 상시</li><li>참가비 5,000원</li></ul>
+            </div>
+          </article>
+
+          <article class="program-card reveal">
+            <div class="program-card__img">
+              <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" alt="무대 위 퀴즈쇼 조명" loading="lazy">
+              <span class="badge badge--neon">무료</span>
+            </div>
+            <div class="program-card__body">
+              <h3>맥주 골든벨 퀴즈쇼</h3>
+              <p>맥주 상식부터 광주 이야기까지! 메인 무대에서 펼쳐지는 관객 참여형 퀴즈 이벤트입니다.</p>
+              <ul class="program-card__meta"><li>매일 20:00</li><li>메인 무대</li></ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- 3-2. 인터랙티브 구역 안내 지도 (Zone Map) -->
+        <div class="zonemap reveal">
+          <h3 class="sub-title">ZONE MAP</h3>
+          <div class="zonemap__wrap">
+            <div class="zonemap__field" role="group" aria-label="행사장 구역 지도">
+              <button type="button" class="zonemap__zone zone--stage" data-zone="stage">🎤<span>메인 무대</span></button>
+              <button type="button" class="zonemap__zone zone--craft" data-zone="craft">🍺<span>수제맥주 부스</span></button>
+              <button type="button" class="zonemap__zone zone--world" data-zone="world">🌍<span>세계맥주 부스</span></button>
+              <button type="button" class="zonemap__zone zone--food" data-zone="food">🚚<span>푸드트럭</span></button>
+              <button type="button" class="zonemap__zone zone--event" data-zone="event">🎯<span>이벤트존</span></button>
+              <button type="button" class="zonemap__zone zone--rest" data-zone="rest">🛋️<span>휴게존</span></button>
+              <button type="button" class="zonemap__zone zone--wc" data-zone="wc">🚻<span>편의시설</span></button>
+              <button type="button" class="zonemap__zone zone--gate" data-zone="gate">🎟️<span>입구·매표소</span></button>
+            </div>
+            <!-- 구역 클릭 시 상세 정보가 표시되는 패널 -->
+            <aside class="zonemap__info" id="zoneInfo" aria-live="polite">
+              <p class="zonemap__hint">지도의 구역을 클릭하면<br>상세 정보를 확인할 수 있어요.</p>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =================================================================
+         SECTION 4. 공연정보 (Live Performances)
+         · 날짜 탭: .tabs__btn 의 data-day 값 = main.js TIMETABLE 의 키
+         · 아티스트/시간/대표곡/영상은 main.js TIMETABLE 에서 수정
+    ================================================================== -->
+    <section id="performance" class="section performance">
+      <div class="performance__bg" data-parallax="0.2" aria-hidden="true"></div>
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">LIVE PERFORMANCES</p>
+          <h2 class="section__title">공연정보</h2>
+        </header>
+
+        <div class="tabs reveal" role="tablist" aria-label="공연 날짜 선택">
+          <button type="button" class="tabs__btn is-active" role="tab" aria-selected="true" data-day="day1">DAY 1<small>10.23 FRI</small></button>
+          <button type="button" class="tabs__btn" role="tab" aria-selected="false" data-day="day2">DAY 2<small>10.24 SAT</small></button>
+          <button type="button" class="tabs__btn" role="tab" aria-selected="false" data-day="day3">DAY 3<small>10.25 SUN</small></button>
+        </div>
+
+        <!-- 타임테이블 카드는 main.js가 자동 생성 -->
+        <div class="timetable" id="timetable" role="tabpanel"></div>
+      </div>
+    </section>
+
+
+    <!-- =================================================================
+         SECTION 5. 오시는길 (Location & Transport)
+         · 지도: iframe src 의 q= 뒤 장소명을 바꾸면 해당 위치로 변경됩니다.
+           (Google Maps 임베드 방식 - API 키 불필요)
+           ※ Google Maps JavaScript API 로 고도화할 경우 main.js 13번 주석 참고
+         · 교통 안내: .transport__panel 의 내용 수정
+    ================================================================== -->
+    <section id="location" class="section location">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">LOCATION &amp; TRANSPORT</p>
+          <h2 class="section__title">오시는길</h2>
+        </header>
+
+        <div class="location__wrap">
+          <div class="location__map reveal">
+            <iframe
+              src="https://maps.google.com/maps?q=%EA%B4%91%EC%A3%BC%20%EC%83%81%EB%AC%B4%EC%8B%9C%EB%AF%BC%EA%B3%B5%EC%9B%90&hl=ko&z=16&output=embed"
+              title="행사장 위치 지도 - 광주 상무시민공원"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <div class="location__addr">
+              <strong>광주 상무시민공원 일원</strong>
+              <p>광주광역시 서구 상무민주로 일대 (김대중컨벤션센터 인근)</p>
+              <button type="button" class="btn btn--sm btn--ghost" id="copyAddr" data-addr="광주광역시 서구 상무민주로 상무시민공원">주소 복사</button>
+            </div>
+          </div>
+
+          <div class="transport reveal">
+            <div class="transport__tabs" role="tablist" aria-label="교통수단 선택">
+              <button type="button" class="transport__tab is-active" role="tab" aria-selected="true" data-target="subway">🚇 지하철</button>
+              <button type="button" class="transport__tab" role="tab" aria-selected="false" data-target="bus">🚌 버스</button>
+              <button type="button" class="transport__tab" role="tab" aria-selected="false" data-target="car">🚗 자가용·주차</button>
+              <button type="button" class="transport__tab" role="tab" aria-selected="false" data-target="shuttle">🚐 셔틀버스</button>
+            </div>
+
+            <div class="transport__panel is-active" id="subway" role="tabpanel">
+              <h4>광주 도시철도 1호선</h4>
+              <ul>
+                <li><b>김대중컨벤션센터역</b> 하차 → 5번 출구 도보 5분</li>
+                <li><b>상무역</b> 하차 → 2번 출구 도보 12분</li>
+              </ul>
+              <p class="note">축제 기간 지하철 막차 연장 운행 여부는 공식 SNS를 통해 안내됩니다.</p>
+            </div>
+
+            <div class="transport__panel" id="bus" role="tabpanel">
+              <h4>시내버스</h4>
+              <ul>
+                <li><b>김대중컨벤션센터 정류장</b> 하차 (여러 노선 정차)</li>
+                <li><b>상무시민공원 정류장</b> 하차 후 도보 3분</li>
+              </ul>
+              <p class="note">정확한 노선 정보는 광주광역시 버스정보시스템(BIS)에서 확인하세요.</p>
+            </div>
+
+            <div class="transport__panel" id="car" role="tabpanel">
+              <h4>자가용 및 주차 안내</h4>
+              <ul>
+                <li>내비게이션 : <b>"상무시민공원"</b> 또는 <b>"김대중컨벤션센터"</b> 검색</li>
+                <li>김대중컨벤션센터 지하주차장 (유료)</li>
+                <li>인근 공영주차장 이용 가능 (축제기간 혼잡 예상)</li>
+              </ul>
+              <p class="note warn">⚠ 음주 후 운전은 절대 금지! 대중교통·대리운전을 이용해 주세요.</p>
+            </div>
+
+            <div class="transport__panel" id="shuttle" role="tabpanel">
+              <h4>무료 셔틀버스</h4>
+              <ul>
+                <li><b>광주송정역</b> ↔ 행사장 : 16:00 – 23:00, 30분 간격</li>
+                <li><b>유스퀘어(종합버스터미널)</b> ↔ 행사장 : 16:00 – 23:00, 30분 간격</li>
+              </ul>
+              <p class="note">셔틀 시간표는 운영 상황에 따라 변경될 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =================================================================
+         SECTION 6. FAQ (자주 묻는 질문)
+         · 질문 추가: <div class="faq__item"> 블록을 복사해 붙여넣기
+         · data-category 값은 위 카테고리 버튼의 data-filter 중 하나로 지정
+           (ticket / transport / rule)
+    ================================================================== -->
+    <section id="faq" class="section faq">
+      <div class="container container--narrow">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">FAQ</p>
+          <h2 class="section__title">자주 묻는 질문</h2>
+        </header>
+
+        <div class="filter-group filter-group--center reveal" id="faqFilter" role="group" aria-label="FAQ 카테고리">
+          <button type="button" class="chip is-active" data-filter="all">전체</button>
+          <button type="button" class="chip" data-filter="ticket">입장·티켓</button>
+          <button type="button" class="chip" data-filter="transport">주차·교통</button>
+          <button type="button" class="chip" data-filter="rule">외부음식·반려동물</button>
+        </div>
+
+        <div class="faq__list reveal" id="faqList">
+          <div class="faq__item" data-category="ticket">
+            <button type="button" class="faq__q" aria-expanded="false">
+              <span class="faq__tag">입장·티켓</span>미성년자도 입장할 수 있나요?
+              <i class="faq__icon" aria-hidden="true"></i>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner">
+              공연 및 푸드존은 보호자 동반 시 입장 가능합니다. 단, 주류 구매·시음은 만 19세 이상만 가능하며 입장 시 신분증 확인 후 성인 손목밴드를 지급합니다.
+            </div></div>
+          </div>
+
+          <div class="faq__item" data-category="ticket">
+            <button type="button" class="faq__q" aria-expanded="false">
+              <span class="faq__tag">입장·티켓</span>티켓 환불은 어떻게 하나요?
+              <i class="faq__icon" aria-hidden="true"></i>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner">
+              행사 3일 전까지 예매처에서 전액 환불 가능하며, 이후에는 수수료가 발생합니다. 우천 등으로 행사가 취소될 경우 전액 환불됩니다.
+            </div></div>
+          </div>
+
+          <div class="faq__item" data-category="ticket">
+            <button type="button" class="faq__q" aria-expanded="false">
+              <span class="faq__tag">입장·티켓</span>티켓에 포함된 혜택은 무엇인가요?
+              <i class="faq__icon" aria-hidden="true"></i>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner">
+              모든 티켓에는 축제 공식 시음잔 1개와 맥주 교환 코인이 포함되어 있습니다. 추가 코인은 현장 코인 부스에서 구매할 수 있습니다.
+            </div></div>
+          </div>
+
+          <div class="faq__item" data-category="transport">
+            <button type="button" class="faq__q" aria-expanded="false">
+              <span class="faq__tag">주차·교통</span>주차장이 충분한가요?
+              <i class="faq__icon" aria-hidden="true"></i>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner">
+              행사장 주변 주차 공간이 매우 혼잡할 것으로 예상됩니다. 음주가 동반되는 행사이므로 지하철, 버스, 무료 셔틀버스 이용을 적극 권장합니다.
+            </div></div>
+          </div>
+
+          <div class="faq__item" data-category="transport">
+            <button type="button" class="faq__q" aria-expanded="false">
+              <span class="faq__tag">주차·교통</span>셔틀버스는 어디서 타나요?
+              <i class="faq__icon" aria-hidden="true"></i>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner">
+              광주송정역과 유스퀘어(종합버스터미널) 앞 셔틀 정류장에서 16시부터 30분 간격으로 운행합니다. 자세한 위치는 '오시는길 &gt; 셔틀버스' 탭을 확인하세요.
+            </div></div>
+          </div>
+
+          <div class="faq__item" data-category="rule">
+            <button type="button" class="faq__q" aria-expanded="false">
+              <span class="faq__tag">외부음식·반려동물</span>외부 음식이나 주류를 가져갈 수 있나요?
+              <i class="faq__icon" aria-hidden="true"></i>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner">
+              외부 주류 반입은 금지됩니다. 간단한 간식과 생수는 반입 가능하지만, 지역 상생을 위해 푸드트럭 이용을 부탁드립니다.
+            </div></div>
+          </div>
+
+          <div class="faq__item" data-category="rule">
+            <button type="button" class="faq__q" aria-expanded="false">
+              <span class="faq__tag">외부음식·반려동물</span>반려동물과 함께 입장할 수 있나요?
+              <i class="faq__icon" aria-hidden="true"></i>
+            </button>
+            <div class="faq__a"><div class="faq__a-inner">
+              소음과 혼잡으로 인한 안전 문제로 반려동물 동반 입장은 제한됩니다. 단, 보조견은 입장 가능합니다.
+            </div></div>
+          </div>
+        </div>
+
+        <!-- 하단 문의하기 (href 를 실제 카카오톡 채널 주소로 교체) -->
+        <div class="faq__contact reveal">
+          <p>찾으시는 답변이 없나요?</p>
+          <div class="faq__contact-btns">
+            <a href="https://pf.kakao.com/" target="_blank" rel="noopener" class="btn btn--kakao">💬 카카오톡 1:1 문의</a>
+            <a href="mailto:info@gwangjubeerfest.kr" class="btn btn--ghost">✉ 이메일 문의</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- =================================================================
+       FOOTER
+       · 주관/후원사 로고: .footer__logos img 의 src 를 실제 로고 파일로 교체
+       · SNS 링크: href 를 공식 계정 주소로 교체
+  ================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__logos">
+        <span class="footer__label">주최·주관·후원</span>
+        <img src="https://placehold.co/160x56/141925/FFB800?text=GWANGJU+CITY&font=montserrat" alt="광주광역시 로고" loading="lazy">
+        <img src="https://placehold.co/160x56/141925/F5F7FA?text=ORGANIZER&font=montserrat" alt="주관사 로고" loading="lazy">
+        <img src="https://placehold.co/160x56/141925/F5F7FA?text=SPONSOR+A&font=montserrat" alt="후원사 A 로고" loading="lazy">
+        <img src="https://placehold.co/160x56/141925/F5F7FA?text=SPONSOR+B&font=montserrat" alt="후원사 B 로고" loading="lazy">
+      </div>
+
+      <div class="footer__main">
+        <div class="footer__brand">
+          <a href="#hero" class="logo"><span class="logo__mark">🍺</span><span class="logo__text">GWANGJU<strong>BEER FEST</strong></span></a>
+          <ul class="footer__sns">
+            <li><a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="인스타그램">IG</a></li>
+            <li><a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="유튜브">YT</a></li>
+          </ul>
+        </div>
+        <div class="footer__info">
+          <ul class="footer__policy">
+            <li><a href="#">이용약관</a></li>
+            <li><a href="#"><strong>개인정보처리방침</strong></a></li>
+          </ul>
+          <p>광주세계맥주축제 운영사무국 | 대표 : 홍길동 | 사업자등록번호 : 000-00-00000</p>
+          <p>고객센터 : 062-000-0000 (평일 10:00–18:00) | info@gwangjubeerfest.kr</p>
+          <p class="footer__copy">© 2026 Gwangju World Beer Festival. All rights reserved.</p>
+        </div>
+      </div>
+      <p class="footer__warn">지나친 음주는 뇌졸중, 기억력 손상이나 치매를 유발합니다. 임신 중 음주는 기형아 출생 위험을 높입니다.</p>
+    </div>
+  </footer>
+
+
+  <!-- =================================================================
+       플로팅 Quick CTA (Hero를 지나면 우측 하단에 나타남)
+  ================================================================== -->
+  <button type="button" class="floating-cta js-open-ticket" id="floatingCta" aria-label="티켓 예매">
+    🎟️ <span>티켓 예매</span>
+  </button>
+  <button type="button" class="to-top" id="toTop" aria-label="맨 위로">↑</button>
+
+
+  <!-- =================================================================
+       MODAL (공용 팝업) - 맥주 상세 / 아티스트 영상 / 티켓 예매에 공통 사용
+       · 내용은 main.js 의 openModal() 이 채워 넣습니다.
+  ================================================================== -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__dim" data-close></div>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button type="button" class="modal__close" data-close aria-label="닫기">×</button>
+      <div class="modal__content" id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- 토스트 알림 (주소 복사 등) -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- [스크립트] body 끝에서 로드 -->
+  <script src="js/main.js"></script>
+</body>
+</html>
